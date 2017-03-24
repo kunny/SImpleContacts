@@ -4,19 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
 import com.androidhuman.example.simplecontacts.model.Person
 import io.realm.Realm
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-
-    lateinit var rvPeople: RecyclerView
-
-    lateinit var tvEmpty: TextView
 
     lateinit var peopleAdapter: PeopleAdapter
 
@@ -26,13 +21,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        rvPeople = findViewById(R.id.rv_activity_main) as RecyclerView
-        tvEmpty = findViewById(R.id.tv_activity_main) as TextView
-
         peopleAdapter = PeopleAdapter()
 
-        rvPeople.layoutManager = LinearLayoutManager(this)
-        rvPeople.adapter = peopleAdapter
+        rv_activity_main.layoutManager = LinearLayoutManager(this)
+        rv_activity_main.adapter = peopleAdapter
 
         realm = Realm.getDefaultInstance()
     }
@@ -86,7 +78,8 @@ class MainActivity : AppCompatActivity() {
         realm.where(Person::class.java).findAllAsync()
                 .addChangeListener { result ->
                     if (result.isLoaded) {
-                        tvEmpty.visibility = if (result.isEmpty()) View.VISIBLE else View.GONE
+                        tv_activity_main.visibility =
+                                if (result.isEmpty()) View.VISIBLE else View.GONE
 
                         peopleAdapter.setPeople(result)
                         peopleAdapter.notifyDataSetChanged()
