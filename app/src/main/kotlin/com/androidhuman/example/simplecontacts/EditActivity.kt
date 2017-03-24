@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.androidhuman.example.simplecontacts.model.PRIMARY_KEY
 import com.androidhuman.example.simplecontacts.model.Person
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_edit.*
@@ -40,7 +41,7 @@ class EditActivity : AppCompatActivity() {
         val realm = Realm.getDefaultInstance()
 
         // Get next id value for primary key
-        val currentMaxId = realm.where(Person::class.java).max(Person.PRIMARY_KEY)
+        val currentMaxId = realm.where(Person::class.java).max(PRIMARY_KEY)
         val nextId: Long = if (null == currentMaxId) 0L else currentMaxId.toLong() + 1
 
         realm.beginTransaction()
