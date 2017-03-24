@@ -16,6 +16,10 @@ class EditActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
+
+        intent.extras?.run {
+            fetchData(getLong(PRIMARY_KEY))
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -40,30 +44,41 @@ class EditActivity : AppCompatActivity() {
 
         val realm = Realm.getDefaultInstance()
 
-        // Get next id value for primary key
-        val currentMaxId = realm.where(Person::class.java).max(PRIMARY_KEY)
-        val nextId: Long = if (null == currentMaxId) 0L else currentMaxId.toLong() + 1
+        val personId = if (-1L != intent?.getLongExtra(PRIMARY_KEY, -1)) {
+            intent.extras.getLong(PRIMARY_KEY)
+        } else {
+            // Get next id value for primary key
+            val currentMaxId = realm.where(Person::class.java).max(PRIMARY_KEY)
+            if (null == currentMaxId) 0L else currentMaxId.toLong() + 1
+        }
 
         realm.beginTransaction()
 
-        realm.createObject(Person::class.java, nextId).run {
+        val person = Person().apply {
+            id = personId
             name = et_activity_edit_name.text.toString()
             address = et_activity_edit_address.text.toString()
         }
 
-        /* Alternative method:
-        Person person = new Person();
-        person.setId(nextId);
-        person.setName(etName.getText().toString());
-        person.setAddress(etAddress.getText().toString());
-        realm.copyToRealm(person);
-        */
+        // insert or update
+        realm.copyToRealmOrUpdate(person)
 
         realm.commitTransaction()
-
         realm.close()
 
         setResult(RESULT_OK)
         finish()
+    }
+
+    private fun fetchData(id: Long) {
+        val realm = Realm.getDefaultInstance()
+
+        val person = checkNotNull(
+                realm.where(Person::class.java).equalTo(PRIMARY_KEY, id).findFirst())
+
+        et_activity_edit_name.setText(person.name)
+        et_activity_edit_address.setText(person.address)
+
+        realm.close()
     }
 }

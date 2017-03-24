@@ -1,9 +1,11 @@
 package com.androidhuman.example.simplecontacts
 
+import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.androidhuman.example.simplecontacts.model.PRIMARY_KEY
 import com.androidhuman.example.simplecontacts.model.Person
 import kotlinx.android.synthetic.main.item_person.view.*
 
@@ -24,7 +26,10 @@ class PeopleAdapter : RecyclerView.Adapter<PeopleAdapter.PersonHolder>() {
                     if (!TextUtils.isEmpty(person.address)) person.address else "(No address)"
 
             setOnClickListener {
-                // TODO: Start an activity to edit an item.
+                with(holder.itemView.context) {
+                    startActivity(Intent(this, EditActivity::class.java)
+                            .putExtra(PRIMARY_KEY, person.id))
+                }
             }
         }
     }
