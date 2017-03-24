@@ -29,7 +29,7 @@ class EditActivity : AppCompatActivity() {
     }
 
     private fun applyChanges() {
-        if (et_activity_edit_name.text.length == 0) {
+        if (et_activity_edit_name.text.isEmpty()) {
             // TODO: Remove error on content changes
             ti_activity_edit_name.error = getText(R.string.msg_name_cannot_be_empty)
             return
@@ -39,18 +39,14 @@ class EditActivity : AppCompatActivity() {
 
         // Get next id value for primary key
         val currentMaxId = realm.where(Person::class.java).max(Person.PRIMARY_KEY)
-        val nextId: Long?
-        if (null == currentMaxId) {
-            nextId = 0L
-        } else {
-            nextId = currentMaxId.toLong() + 1
-        }
+        val nextId: Long = if (null == currentMaxId) 0L else currentMaxId.toLong() + 1
 
         realm.beginTransaction()
 
-        val person = realm.createObject(Person::class.java, nextId)
-        person.name = et_activity_edit_name.text.toString()
-        person.address = et_activity_edit_address.text.toString()
+        realm.createObject(Person::class.java, nextId).run {
+            name = et_activity_edit_name.text.toString()
+            address = et_activity_edit_address.text.toString()
+        }
 
         /* Alternative method:
         Person person = new Person();

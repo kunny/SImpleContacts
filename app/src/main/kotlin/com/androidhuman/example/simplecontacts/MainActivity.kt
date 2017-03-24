@@ -13,20 +13,18 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var peopleAdapter: PeopleAdapter
+    val peopleAdapter: PeopleAdapter by lazy { PeopleAdapter() }
 
-    lateinit var realm: Realm
+    val realm: Realm by lazy { Realm.getDefaultInstance() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        peopleAdapter = PeopleAdapter()
-
-        rv_activity_main.layoutManager = LinearLayoutManager(this)
-        rv_activity_main.adapter = peopleAdapter
-
-        realm = Realm.getDefaultInstance()
+        with (rv_activity_main) {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = peopleAdapter
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -81,8 +79,10 @@ class MainActivity : AppCompatActivity() {
                         tv_activity_main.visibility =
                                 if (result.isEmpty()) View.VISIBLE else View.GONE
 
-                        peopleAdapter.setPeople(result)
-                        peopleAdapter.notifyDataSetChanged()
+                        with (peopleAdapter) {
+                            setPeople(result)
+                            notifyDataSetChanged()
+                        }
 
                         result.removeAllChangeListeners()
                     }
