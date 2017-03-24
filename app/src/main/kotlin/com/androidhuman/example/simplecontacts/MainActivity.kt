@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (R.id.menu_activity_main_add == item.itemId) {
             startActivityForResult(
-                    Intent(this, EditActivity::class.java), EditActivity.REQUEST_CODE)
+                    Intent(this, EditActivity::class.java), REQUEST_CODE)
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (RESULT_OK == resultCode && EditActivity.REQUEST_CODE == requestCode) {
+        if (RESULT_OK == resultCode && REQUEST_CODE == requestCode) {
             queryPeople()
         } else {
             super.onActivityResult(requestCode, resultCode, data)

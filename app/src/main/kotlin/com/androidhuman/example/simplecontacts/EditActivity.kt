@@ -8,6 +8,8 @@ import com.androidhuman.example.simplecontacts.model.Person
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_edit.*
 
+const val REQUEST_CODE = 10
+
 class EditActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,10 +64,5 @@ class EditActivity : AppCompatActivity() {
 
         setResult(RESULT_OK)
         finish()
-    }
-
-    companion object {
-
-        val REQUEST_CODE = 10
     }
 }
