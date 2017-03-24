@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'realm-android'
 
 android {
@@ -13,6 +14,10 @@ android {
         versionName "1.0"
     }
 
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -24,6 +29,7 @@ android {
 dependencies {
     compile rootProject.ext.appCompat
     compile rootProject.ext.constraintLayout
+    compile rootProject.ext.kotlin
     compile rootProject.ext.recyclerView
     compile rootProject.ext.supportDesign
 }
