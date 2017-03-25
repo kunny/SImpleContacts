@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -24,6 +25,9 @@ class MainActivity : AppCompatActivity() {
         with (rv_activity_main) {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = peopleAdapter
+
+            ItemTouchHelper(PeopleListTouchCallback(peopleAdapter, realm))
+                    .attachToRecyclerView(this)
         }
     }
 
